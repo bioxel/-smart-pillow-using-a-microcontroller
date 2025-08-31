@@ -1,0 +1,25 @@
+1. Arduino Power
+•	Connect the 9V rechargeable battery to the VIN pin and GND of the Arduino Mega.
+•	Ensure the battery is fully charged for stable operation.
+2. 4-pin Sound Sensor
+•	VCC: Connect to 5V on the Arduino Mega.
+•	GND: Connect to GND.
+•	OUT: Connect to a digital pin, e.g., D2.
+•	AO (Analog Out): Connect to an analog pin (optional), e.g., A0, for detailed sound intensity data.
+3. DHT11 Sensor
+•	VCC: Connect to 5V on the Arduino.
+•	GND: Connect to GND.
+•	DATA: Connect to a digital pin, e.g., D3.
+•	Use a 10kΩ pull-up resistor between the DATA and VCC pins.
+4. FSR Sensor
+•	Connect one leg of the FSR to 5V.
+•	Connect the other leg to a 10kΩ pull-down resistor connected to GND, and the same point to an analog pin, e.g., A1.
+5. Relay Module
+•	VCC: Connect to 5V on the Arduino.
+•	GND: Connect to GND.
+•	IN: Connect to a digital pin, e.g., D4.
+•	Connect the 6V battery to the COM and NO (Normally Open) pins of the relay, and wire the air pump to the same.
+6. 20x4 LCD (with I2C Adapter)
+•	Connect the SDA pin to SDA on Arduino (Mega pin 20).
+•	Connect the SCL pin to SCL on Arduino (Mega pin 21).
+•	Connect VCC to 5V and GND to GND.
