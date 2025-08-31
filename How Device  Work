@@ -1,0 +1,6 @@
+1. Initial Setup: 
+The Arduino Mega initializes all components, including the sound sensor, FSR, DHT11, air pump, and LCD screen.  The LCD screen displays the current temperature and humidity data from the DHT11 sensor. 
+2. Snoring Detection: 
+The sound sensor constantly monitors the surrounding environment for snoring sounds.  If snoring is detected, the Arduino Mega processes the signal from the sound sensor and activates the air pump.
+ 3. Air Pad Adjustment: Based on the snoring detection, the Arduino Mega uses the air pump to inflate or deflate the air pads, subtly adjusting the user’s head position to improve airway alignment and reduce snoring.  The FSR measures the pressure from the user’s head. If too much pressure is detected, the system adjusts the air pads further to ensure comfort.
+ 4. Environmental Monitoring: The DHT11 sensor continuously measures the temperature and humidity of the sleeping environment.  The data from the DHT11 is displayed on the LCD screen, allowing the user to monitor the sleep conditions.
