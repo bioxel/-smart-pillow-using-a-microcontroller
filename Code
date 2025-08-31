@@ -1,0 +1,91 @@
+#include <Wire.h>
+#include <LiquidCrystal_I2C.h>
+#include <DHT.h>
+
+#define DHTPIN 2
+#define DHTTYPE DHT11
+DHT dht(DHTPIN, DHTTYPE);
+
+LiquidCrystal_I2C lcd(0x27, 20, 4); // Initialize for a 20x4 LCD, adjust address if needed
+
+int fsrPin = A0;
+int fsrRead;
+
+#define sensorPin 8
+#define sensorPin1 A1
+int relayPin = 7;
+int snoringPattern[] = {489};
+const int patternLength = sizeof(snoringPattern) / sizeof(snoringPattern[0]);
+int matchIndex = 0;
+
+void setup() {
+  Serial.begin(9600);
+  dht.begin();
+  lcd.init();
+  lcd.backlight();
+  lcd.print("Smart Pillow By");
+  lcd.setCursor(0, 1);
+  delay(2000);
+  
+}
+
+void loop() {
+  float humidity = dht.readHumidity();
+  float temperature = dht.readTemperature();
+
+  fsrRead = analogRead(fsrPin);
+  int sensorData1 = analogRead(sensorPin1);
+
+  if (isnan(humidity) || isnan(temperature)) {
+    lcd.setCursor(0, 0);
+    lcd.print("Sensor Error!");
+    delay(2000);
+    return;
+  }
+
+  // Display temperature and sleep status
+  lcd.setCursor(10, 1);
+  lcd.print("TMP: ");
+  lcd.print(temperature, 1); // Display 1 decimal place
+  lcd.print("C ");
+
+  lcd.setCursor(0, 1); // Same row
+  lcd.print("HUM: ");
+  lcd.print(humidity, 0); // Whole number
+  lcd.print("%");
+
+  // Display sleep status
+  lcd.setCursor(0, 2);
+  if (fsrRead < 400) {
+    lcd.print("Sleep: Light       ");
+  } else if (fsrRead < 750) {
+    lcd.print("Sleep: Normal      ");
+  } else if (fsrRead < 1000) {
+    lcd.print("Sleep: Heavy       ");
+  } else {
+    lcd.print("Sleep: Detecting   ");
+  }
+
+  // Snoring alert
+  lcd.setCursor(0, 3);
+  lcd.print("Snoring: ");
+  if (sensorData1 == snoringPattern[matchIndex]) {
+    matchIndex++;
+    if (matchIndex == patternLength) {
+      lcd.print("ALERT!         ");
+      Serial.println("Snoring detected!");
+      digitalWrite(relayPin, HIGH);
+      delay(30);
+      digitalWrite(relayPin, LOW);
+      delay(18000);
+      matchIndex = 0;
+    }
+  } else {
+    lcd.print("None           ");
+    matchIndex = 0;
+  }
+
+  // Debugging info for development (optional)
+  Serial.println(sensorData1);
+  delay(50);
+}
